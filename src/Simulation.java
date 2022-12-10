@@ -1,19 +1,42 @@
 import exceptions.CustomException;
 import models.Item;
+import state.ForSale;
+import state.InStock;
+import state.Sold;
 import utilites.FileService;
 
 import java.util.Scanner;
 
 public class Simulation {
-    private static final String NEW_LINE = "%n";
-    private static final String HEADER = " # | ID | Name ";
+    private static final String NEW_LINE = "\n";
+    private static final String HEADER = "\n # | ID  | Name ";
+    private static final String HEADER_DELIMITER = "---+-----+------";
     private static final String LINE = " %s | %s | %s ";
-    private static final String DETAIL_ITEM_HEADER = " ID | Name | Price | Honorary Code | State";
+    private static final String DETAIL_ITEM_HEADER = "\n ID | Name | Price | Honorary Code | State";
     private static final String DETAIL_ITEM_LINE = " %s | %s | %s | %s | %s";
 
     private static final Item[] items = FileService.getGoods();
 
     public void run() {
+        setDefaultState();
+        action();
+    }
+
+    private void setDefaultState() {
+        for (var item : items) {
+            if (item.getState().contains("stock")) {
+                item.setStateObj(new InStock());
+            }
+            if (item.getState().contains("sale")) {
+                item.setStateObj(new ForSale());
+            }
+            if (item.getState().contains("sold")) {
+                item.setStateObj(new Sold());
+            }
+        }
+    }
+
+    private void action() {
         printItemList(items);
 
         int choice = choiceItem("Выберите товар (введите его номер): ");
@@ -31,7 +54,7 @@ public class Simulation {
                 "3 - Выдать победителю;\n" +
                 "4 - Снять с торгов;\n" +
                 "5 - Отобразить информацию о товаре;\n" +
-                "6 - Вернуться в список товаров;");
+                "6 - Вернуться в список товаров;" + NEW_LINE);
 
         int answer = choiceItem("что вы хотите сделать (введите номер): ");
 
@@ -46,19 +69,18 @@ public class Simulation {
                     actionWithItem(item);
                     break;
                 case 3:
-                    item.withdraw();
-                    actionWithItem(item);
-                    break;
-                case 4:
                     item.giveToTheWinner();
                     actionWithItem(item);
                     break;
+                case 4:
+                    item.withdraw();
+                    actionWithItem(item);
+                    break;
                 case 5:
-                    printItem(item);
                     actionWithItem(item);
                     break;
                 case 6:
-                    run();
+                    action();
                     break;
                 default:
                     print("Неверно введен номер действия. Попробуйте еще раз.");
@@ -66,22 +88,19 @@ public class Simulation {
             }
         } catch (CustomException e) {
             print(e.getMessage());
+            actionWithItem(item);
         }
     }
 
     private int choiceItem(String message) {
         print(message);
-        int answer = 0;
-        try (Scanner scanner = new Scanner(System.in)) {
-            answer = Integer.parseInt(scanner.next());
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
+        Scanner scanner = new Scanner(System.in);
+        int answer = scanner.nextInt();
         return answer;
     }
 
     private void printItemList(Item... items) {
-        StringBuilder sb = new StringBuilder(HEADER).append(NEW_LINE);
+        StringBuilder sb = new StringBuilder(HEADER).append(NEW_LINE).append(HEADER_DELIMITER).append(NEW_LINE);
         int count = 1;
         for (var item : items) {
             sb.append(String.format(LINE, count, item.getId(), item.getName()));
