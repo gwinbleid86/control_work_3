@@ -1,8 +1,5 @@
 import exceptions.CustomException;
 import models.Item;
-import state.ForSale;
-import state.InStock;
-import state.Sold;
 import utilites.FileService;
 
 import java.util.Scanner;
@@ -18,23 +15,23 @@ public class Simulation {
     private static final Item[] items = FileService.getGoods();
 
     public void run() {
-        setDefaultState();
+//        setDefaultState();
         action();
     }
 
-    private void setDefaultState() {
-        for (var item : items) {
-            if (item.getState().contains("stock")) {
-                item.setStateObj(new InStock());
-            }
-            if (item.getState().contains("sale")) {
-                item.setStateObj(new ForSale());
-            }
-            if (item.getState().contains("sold")) {
-                item.setStateObj(new Sold());
-            }
-        }
-    }
+//    private void setDefaultState() {
+//        for (var item : items) {
+//            if (item.getState().contains("stock")) {
+//                item.setStateObj(new InStock());
+//            }
+//            if (item.getState().contains("sale")) {
+//                item.setStateObj(new ForSale());
+//            }
+//            if (item.getState().contains("sold")) {
+//                item.setStateObj(new Sold());
+//            }
+//        }
+//    }
 
     private void action() {
         printItemList(items);

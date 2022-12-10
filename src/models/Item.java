@@ -8,8 +8,7 @@ public class Item {
     private String name;
     private int price;
     private String honoraryCode;
-    private String state;
-    private transient State stateObj;
+    private State state;
 
     public int getId() {
         return id;
@@ -35,35 +34,27 @@ public class Item {
         this.honoraryCode = honoraryCode;
     }
 
-    public String getState() {
+    public State getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(State state) {
         this.state = state;
     }
 
-    public State getStateObj() {
-        return stateObj;
-    }
-
-    public void setStateObj(State stateObj) {
-        this.stateObj = stateObj;
-    }
-
     public void startSale() throws CustomException {
-        stateObj.startSale(this);
+        state.startSale(this);
     }
 
     public void ricePrice() throws CustomException {
-        stateObj.ricePrice(this);
+        state.ricePrice(this);
     }
 
     public void withdraw() throws CustomException {
-        stateObj.withdraw(this);
+        state.withdraw(this);
     }
 
     public void giveToTheWinner() throws CustomException {
-        stateObj.giveToTheWinner(this);
+        state.giveToTheWinner(this);
     }
 }

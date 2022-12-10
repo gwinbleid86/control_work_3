@@ -4,27 +4,27 @@
     "name": "Vine 1836",
     "price": 0,
     "honorary_code ": "",
-    "state": "In stock"
+    "state": "IN_STOCK"
   },
   {
     "id": 200,
     "name": "NFT Monkey_Kong",
     "price": 0,
     "honorary_code ": "",
-    "state": "In stock"
+    "state": "IN_STOCK"
   },
   {
     "id": 300,
     "name": "Pushkin's Statue",
     "price": 0,
     "honorary_code ": "",
-    "state": "In stock"
+    "state": "IN_STOCK"
   },
   {
     "id": 400,
     "name": "Flower of the moon. Pacco Robann",
     "price": 0,
     "honorary_code ": "",
-    "state": "In stock"
+    "state": "IN_STOCK"
   }
 ]

@@ -8,11 +8,10 @@ import strategy.Silver;
 import strategy.Strategy;
 
 public enum State {
-    IN_STOCK("In stock") {
+    IN_STOCK {
         @Override
         public void startSale(Item item) throws CustomException {
-            item.setStateObj(new ForSale());
-            item.setState("For sale");
+            item.setState(State.FOR_SALE);
             System.out.println("Торги начались!\n");
         }
 
@@ -32,7 +31,7 @@ public enum State {
         }
 
     },
-    FOR_SALE("For sale") {
+    FOR_SALE {
         @Override
         public void startSale(Item item) throws CustomException {
             throw new CustomException("Этот товар уже учавствует в торгах.\n");
@@ -47,8 +46,7 @@ public enum State {
         @Override
         public void withdraw(Item item) throws CustomException {
             if (item.getPrice() == 0) {
-                item.setStateObj(new InStock());
-                item.setState("In stock");
+                item.setState(State.IN_STOCK);
                 System.out.printf("Товар %s успешно вернулся на склад.%n", item.getName());
             } else {
                 throw new CustomException("Нельзя вернуть на склад товар, так как он уже в резерве.");
@@ -59,8 +57,7 @@ public enum State {
         public void giveToTheWinner(Item item) throws CustomException {
             if (item.getPrice() > 0) {
                 makeHonoraryCode(item);
-                item.setStateObj(new Sold());
-                item.setState("Sold");
+                item.setState(State.SOLD);
                 System.out.printf("Товар %s успешно передан победителю.%n", item.getName());
             } else {
                 throw new CustomException("Нельзя отдать товар безплатно!\n");
@@ -81,7 +78,7 @@ public enum State {
             strategy.generateHonoraryCode(item);
         }
     },
-    SOLD("Sold") {
+    SOLD {
         @Override
         public void startSale(Item item) throws CustomException {
             throw new CustomException("Нельзя выставить на аукцион, так как товар уже продан.\n");
@@ -102,16 +99,6 @@ public enum State {
             throw new CustomException("Нельзя отдать товар кому-то другому, так как товар уже продан.\n");
         }
     };
-
-    private String value;
-
-    State(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
 
     public abstract void startSale(Item item) throws CustomException;
 
