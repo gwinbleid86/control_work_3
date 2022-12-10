@@ -11,6 +11,10 @@ public class Item {
     private String state;
     private transient State stateObj;
 
+    public int getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
